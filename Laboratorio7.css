@@ -13,6 +13,8 @@ form {
     border: solid 1px #c2c2c2;
     padding-bottom: 10px;
     background: #fafafa;
+    border-radius: 15px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   }
   input[type=textfield] {
       width: 75%;
@@ -24,9 +26,10 @@ form {
       text-align: left;
       color: #333;
       background: #ccc;
+      box-shadow: inset  8px 4px 4px rgba(0, 0, 0, 0.2);
   }
   input[type=button], input[type=submit], input[type=reset] {
-      background-color: #4CAF50;
+      background-color: darkblue;
       border: none;
       color: white;
       padding: 16px 32px;
@@ -35,7 +38,9 @@ form {
       text-decoration: none;
       margin: 4px 2px;
       cursor: pointer;
+      border-radius: 10px;
+      box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.2);
   }
   input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
-    background-color: #333;
+    background-color: blue;
   }

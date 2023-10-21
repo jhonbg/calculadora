@@ -5,7 +5,94 @@ function result()
     var valueText = textToOperate.value
     var number1
     var number2
-    validateString(valueText)      
+    var valid
+    valid = validateString(valueText)
+    if(valid == true)
+    {
+        var i=0
+        var thereIsDOrM = thereIsDiOrMu(valueText)
+        while (thereIsDOrM != false) 
+        {
+            for(var i = 0; i < valueText.length;i++)
+            {
+                if(valueText[i] == "*" || valueText[i] == "/")
+                {
+                    switch(valueText[i])
+                    {
+                        case "*":
+                            var j = i+1
+                            var k = i-1
+                            var valid1 = false
+                            var valid2 = false
+                            while(valid1 == false)
+                            {
+                                if(valueText[j] == "+" || valueText[j] == "/" || valueText[j] == "-" || valueText[j] == "*" || j == valueText.length)
+                                {
+                                    valid1 = true
+                                }
+                                j++
+                            }
+                            while(valid2 == false)
+                            {
+                                if(valueText[k] == "+" || valueText[k] == "/" || valueText[k] == "-" || valueText[k] == "*" || k == -1)
+                                {
+                                    valid2 = true
+                                }
+                                k--
+                            }
+                            number1 = valueText.slice(i+1,j-1)
+                            number2 = valueText.slice(k+2,i)
+                            valueText = parseInt(number1)*parseInt(number2)
+                            break;
+                        case "/":
+                            var j = i+1
+                            var k = i-1
+                            var valid1 = false
+                            var valid2 = false
+                            while(valid1 == false)
+                            {
+                                if(valueText[j] == "+" || valueText[j] == "/" || valueText[j] == "-" || valueText[j] == "*" || j == valueText.length)
+                                {
+                                    valid1 = true
+                                }
+                                j++
+                            }
+                            while(valid2 == false)
+                            {
+                                if(valueText[k] == "+" || valueText[k] == "/" || valueText[k] == "-" || valueText[k] == "*" || k == -1)
+                                {
+                                    valid2 = true
+                                }
+                                k--
+                            }
+                            number1 = valueText.slice(k+2,i)
+                            number2 = valueText.slice(i+1,j-1)
+                            valueText = parseInt(number1)/parseInt(number2)
+                            break;        
+                    }
+
+                    alert(k)
+                    alert(number1)
+                    alert(number2)
+                    alert(valueText)
+                }
+                       
+            }
+            thereIsDOrM = thereIsDiOrMu(valueText)     
+        }
+    }      
+}
+
+function thereIsDiOrMu(word)
+{
+    for (let index = 0; index < word.length; index++) 
+    {
+        if(word[index] == "*" || word[index] == "/")
+        {
+            return true
+        }   
+    }
+    return false
 }
 
 function validateString(cadena)
@@ -13,11 +100,15 @@ function validateString(cadena)
     if(cadena[0]=="+" || cadena[0]=="/" || cadena[0] == "-" || cadena[0] == "*")
     {
         textToOperate.value = "primer caracter no puede ser un símbolo "+cadena[0]
+        textToOperate.disabled = true
+        return false
     }
     
     else if(cadena[cadena.length-1]=="+" || cadena[cadena.length-1]=="/" || cadena[cadena.length-1] == "-" || cadena[cadena.length-1] == "*" )
     {
         textToOperate.value = "El ultimo caracter no puede ser un símbolo"
+        textToOperate.disabled = true
+        return false
     }
 
     else
@@ -29,6 +120,8 @@ function validateString(cadena)
                 if(cadena[i+1]=="+" || cadena[i+1]=="/" || cadena[i+1] == "-" || cadena[i+1] == "*")
                 {
                     textToOperate.value = "los símbolos "+cadena[i]+" y "+cadena[i+1]+" no pueden ir seguidos"
+                    textToOperate.disabled = true
+                    return false
                 }    
             }
             else if(cadena[i]=="/")
@@ -37,13 +130,26 @@ function validateString(cadena)
                 || (cadena[i+1]=="0" && cadena[i+2] == "*") || cadena[cadena.length-1] == "0")
                 {
                     textToOperate.value = "la divicion por 0 no esta definida"
+                    textToOperate.disabled = true
+                    return false
                 }
                 else if(cadena[i+1]=="+" || cadena[i+1]=="/" || cadena[i+1] == "-" || cadena[i+1] == "*")
                 {
                     textToOperate.value = "los símbolos "+cadena[i]+" y "+cadena[i+1]+" no pueden ir seguidos"
+                    textToOperate.disabled = true
+                    return false
                 }
             } 
         }
     }
-    return 
+    return true
+}
+
+function verify(fact)
+{
+    if(textToOperate.disabled == false)
+    {
+        return textToOperate.value += fact
+    }
+    return ''
 }
