@@ -1,4 +1,4 @@
-var textToOperate = document.getElementById('ans')
+/*var textToOperate = document.getElementById('ans')
 
 function result()
 {
@@ -231,4 +231,91 @@ function verify(fact)
         return textToOperate.value += fact
     }
     return ''
-}
+} */
+function calculate(expression) {
+    let stack = [];
+    let operators = [];
+    let currentNumber = "";
+    
+    for (let i = 0; i < expression.length; i++) {
+      const char = expression[i];
+      
+      if (char === "(") {
+        stack.push(currentNumber);
+        currentNumber = "";
+        operators.push(char);
+      } else if (char === ")") {
+        stack.push(currentNumber);
+        currentNumber = "";
+        
+        while (operators[operators.length - 1] !== "(") {
+          const operator = operators.pop();
+          const rightOperand = stack.pop();
+          const leftOperand = stack.pop();
+          
+          stack.push(applyOperator(leftOperand, rightOperand, operator));
+        }
+        
+        operators.pop();
+      } else if (isOperator(char)) {
+        stack.push(currentNumber);
+        currentNumber = "";
+        
+        while (
+          operators.length > 0 &&
+          precedence(operators[operators.length - 1]) >= precedence(char)
+        ) {
+          const operator = operators.pop();
+          const rightOperand = stack.pop();
+          const leftOperand = stack.pop();
+          
+          stack.push(applyOperator(leftOperand, rightOperand, operator));
+        }
+        
+        operators.push(char);
+      } else {
+        currentNumber += char;
+      }
+    }
+    
+    stack.push(currentNumber);
+    
+    while (operators.length > 0) {
+      const operator = operators.pop();
+      const rightOperand = stack.pop();
+      const leftOperand = stack.pop();
+  
+      stack.push(applyOperator(leftOperand, rightOperand, operator));
+    }
+    
+    return Number(stack[0]);
+  }
+  
+  function isOperator(char) {
+    return ["+", "-", "*", "/"].includes(char);
+  }
+  
+  function precedence(operator) {
+    if (operator === "+" || operator === "-") {
+      return 1;
+    } else if (operator === "*" || operator === "/") {
+      return 2;
+    } else {
+      return -1;
+    }
+  }
+  
+  function applyOperator(leftOperand, rightOperand, operator) {
+    switch (operator) {
+      case "+":
+        return Number(leftOperand) + Number(rightOperand);
+      case "-":
+        return Number(leftOperand) - Number(rightOperand);
+      case "*":
+        return Number(leftOperand) * Number(rightOperand);
+      case "/":
+        return Number(leftOperand) / Number(rightOperand);
+      default:
+        throw new Error(`Invalid operator: ${operator}`);
+    }
+  }
